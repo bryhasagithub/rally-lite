@@ -1,7 +1,8 @@
+import React from 'react';
 import { User } from '@prisma/client';
 import Image from 'next/image';
 import classNames from '../lib/classNames';
-import TextAvatar from './TextAvatar';
+import { TextAvatar } from './TextAvatar';
 
 const navigation = [
   { name: 'Studies', href: '#', current: true },
