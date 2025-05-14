@@ -32,4 +32,28 @@ Next to set up the dev environement, you'll want to run the following commands f
 
 After running `yarn dev`, you should be able to go to `http://localhost:3000` to see Rally Lite running.
 
-That's all for now!
+### Examples
+
+#### Study | GET - get study by ID
+
+```bash
+curl http://localhost:3000/api/studies/0 | jq '.'
+```
+
+#### Study | POST - create new study
+
+```bash
+  curl -X POST http://localhost:3000/api/studies \
+  -H "Content-Type: application/json" \
+  -d '{
+  "name": "My First Study",
+  "participantCount": 100,
+  "ownerId": "0"
+  }' | jq '.'
+```
+
+#### User | GET - get all users
+
+```bash
+curl http://localhost:3000/api/users | jq '.'
+```
