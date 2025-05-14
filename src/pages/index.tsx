@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/outline';
 import prisma from '../lib/prisma';
 import Layout from '../components/Layout';
-
+import { SearchSection } from '../components/SearchSection';
 type Props = {
   user: User;
 };
@@ -21,52 +21,10 @@ const people = [
   },
 ];
 
-/**
-  
-  Example of fetching data client side:
- 
-  fetch('api/users')
-    .then((res) => res.json())
-    .then((users: User[]) => {
-      setUsers(users);
-      setIsLoading(false);
-    });
-
-  Example of posting data client side:
-
-  fetch('/api/users', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(objectWithData),
-  })
-
- */
-
 const IndexPage = ({ user }: Props) => {
   return (
     <Layout user={user}>
-      <div className="mb-4">
-        <label
-          htmlFor="search"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Search
-        </label>
-        <div className="mt-1 relative rounded-md shadow-sm w-80">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-          </div>
-          <input
-            type="text"
-            name="search"
-            id="search"
-            className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
-            placeholder="Search for studies..."
-          />
-        </div>
-      </div>
+      <SearchSection />
       <div className="flex flex-col">
         <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
