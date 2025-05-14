@@ -1,50 +1,75 @@
 import React from 'react';
-import { User } from '@prisma/client';
+import { Study, User } from '@prisma/client';
 import Layout from '../components/Layout';
-import { SearchSection } from '../components/SearchSection';
-import { Table } from '../components/Table';
 import { Pagination } from '../components/Pagination';
 import { ResultSpan } from '../components/PaginationSpan';
-import { Person } from '../types';
+import { StudiesTable } from '../components/StudiesTable';
+import { SearchSection } from '../components/SearchSection';
 
 type Props = {
   user: User;
 };
 
+const ITEMS_PER_PAGE = 10;
+
 const IndexPage: React.FC<Props> = ({ user }) => {
-  const [people, setPeople] = React.useState<Person[]>([]);
+  const [studies, setStudies] = React.useState<Study[]>([]);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [totalResults, setTotalResults] = React.useState(0);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const fetchStudies = async (page: number) => {
+    setIsLoading(true);
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/studies?page=${page}&limit=${ITEMS_PER_PAGE}`
+      );
+      const data = await res.json();
+      setStudies(data.studies);
+      setTotalResults(data.total);
+    } catch (error) {
+      console.error('Error fetching studies:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   React.useEffect(() => {
-    const fetchPeople = async () => {
-      const res = await fetch('http://localhost:3000/api/user');
-      const data = await res.json();
-      setPeople(data);
-    };
-    fetchPeople();
-  }, []);
+    fetchStudies(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const totalPages = Math.ceil(totalResults / ITEMS_PER_PAGE);
 
   return (
     <Layout user={user}>
       <SearchSection />
-      <Table people={people} />
-      <div className="bg-white py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-        <div className="flex items-center justify-between w-full">
-          <ResultSpan currentPage={1} totalPages={10} totalResults={97} />
-          <Pagination />
-        </div>
-      </div>
+      {isLoading ? (
+        <div className="text-center py-4">Loading...</div>
+      ) : (
+        <>
+          <StudiesTable studies={studies} />
+          <div className="bg-white py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+            <div className="flex items-center justify-between w-full">
+              <ResultSpan
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalResults={totalResults}
+              />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </Layout>
   );
 };
-
-export async function getServerSideProps() {
-  const res = await fetch('http://localhost:3000/api/user');
-  const user = await res.json();
-  return {
-    props: {
-      user,
-    },
-  };
-}
 
 export default IndexPage;

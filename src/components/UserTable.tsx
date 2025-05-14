@@ -1,11 +1,11 @@
 import React from 'react';
-import { Person } from '../types';
+import { User } from '@prisma/client';
 
 type Props = {
-  people: Person[];
+  users: User[];
 };
 
-export const Table: React.FC<Props> = ({ people }) => {
+export const UserTable: React.FC<Props> = ({ users }) => {
   return (
     <div className="flex flex-col">
       <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -44,27 +44,27 @@ export const Table: React.FC<Props> = ({ people }) => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {people.length > 0 ? (
-                  people.map((person) => (
-                    <tr key={person.email}>
+                {users.length > 0 ? (
+                  users.map((user) => (
+                    <tr key={user.id}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        {person.name}
+                        {user.name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.title}
+                        {user.title}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.email}
+                        {user.email}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.role}
+                        {user.role}
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                         <a
                           href="#"
                           className="text-indigo-600 hover:text-indigo-900"
                         >
-                          Edit<span className="sr-only">, {person.name}</span>
+                          Edit<span className="sr-only">, {user.name}</span>
                         </a>
                       </td>
                     </tr>

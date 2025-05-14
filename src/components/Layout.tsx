@@ -5,9 +5,9 @@ import classNames from '../lib/classNames';
 import { TextAvatar } from './TextAvatar';
 
 const navigation = [
-  { name: 'Studies', href: '#', current: true },
-  { name: 'People', href: '#', current: false },
-  { name: 'Incentives', href: '#', current: false },
+  { name: 'Studies', href: '/', current: true },
+  { name: 'People', href: '/user', current: false },
+  { name: 'Incentives', href: '/incentives', current: false },
 ];
 
 type Props = {
