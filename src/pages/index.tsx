@@ -11,16 +11,18 @@ type Props = {
   user: User;
 };
 
-const people: Person[] = [
-  {
-    name: 'Lindsay Walton',
-    title: 'Front-end Developer',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-  },
-];
+const IndexPage: React.FC<Props> = ({ user }) => {
+  const [people, setPeople] = React.useState<Person[]>([]);
 
-const IndexPage = ({ user }: Props) => {
+  React.useEffect(() => {
+    const fetchPeople = async () => {
+      const res = await fetch('http://localhost:3000/api/user');
+      const data = await res.json();
+      setPeople(data);
+    };
+    fetchPeople();
+  }, []);
+
   return (
     <Layout user={user}>
       <SearchSection />
